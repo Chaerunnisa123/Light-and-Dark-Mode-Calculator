@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MPK – Majelis Perwakilan Kelas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #f5f0e8;
+      --navy-mid: #141e35;
+      --navy-light: #1d2d50;
+      --gold: #c9973a;
+      --gold-light: #e8b84b;
+      --cream: #f5f0e8;
+      --white: #ffffff;
+      --gray: #8a93a8;
+      --card-bg: #111827;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 6%;
+      background: rgba(11,17,32,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,151,58,.18);
+    }
+    .nav-logo { display: flex; align-items: center; gap: .75rem; }
+    .nav-logo .emblem {
+      width: 40px; height: 40px;
+      background: var(--gold);
+      clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: .85rem; font-weight: 900; color: var(--navy);
+    }
+    .nav-logo span { font-family: 'Playfair Display', serif; font-size: 1.15rem; letter-spacing: .04em; color: var(--gold-light); }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--cream); font-size: .88rem; font-weight: 500; letter-spacing: .03em; transition: color .2s; }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-cta {
+      padding: .5rem 1.3rem; border: 1.5px solid var(--gold);
+      color: var(--gold); background: transparent; border-radius: 4px;
+      font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 600;
+      cursor: pointer; transition: all .25s; letter-spacing: .04em;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--navy); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 9rem 6% 5rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,151,58,.13) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 80% 70%, rgba(29,45,80,.5) 0%, transparent 60%);
+    }
+    /* decorative rings */
+    .ring {
+      position: absolute; border-radius: 50%; border: 1px solid rgba(201,151,58,.12);
+      animation: pulse 6s ease-in-out infinite;
+    }
+    .ring:nth-child(1) { width: 500px; height: 500px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 0s; }
+    .ring:nth-child(2) { width: 750px; height: 750px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 1s; }
+    .ring:nth-child(3) { width: 1000px; height: 1000px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 2s; }
+    @keyframes pulse { 0%,100%{opacity:.6} 50%{opacity:.2} }
+
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+    .hero-badge {
+      display: inline-block; margin-bottom: 1.5rem;
+      padding: .35rem 1rem; border: 1px solid rgba(201,151,58,.5);
+      border-radius: 50px; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--gold-light); background: rgba(201,151,58,.08);
+      animation: fadeUp .8s ease both;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 6vw, 5rem); line-height: 1.1;
+      font-weight: 900; color: var(--white);
+      animation: fadeUp .8s .15s ease both;
+    }
+    .hero h1 em { font-style: normal; color: var(--gold-light); }
+    .hero p {
+      margin-top: 1.5rem; font-size: 1.05rem; line-height: 1.75;
+      color: var(--gray); max-width: 580px; margin-left: auto; margin-right: auto;
+      animation: fadeUp .8s .3s ease both;
+    }
+    .hero-btns { margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fadeUp .8s .45s ease both; }
+    .btn-primary {
+      padding: .85rem 2rem; background: var(--gold); color: var(--navy);
+      border: none; border-radius: 5px; font-family: 'DM Sans', sans-serif;
+      font-size: .95rem; font-weight: 700; cursor: pointer;
+      letter-spacing: .03em; transition: all .25s; text-decoration: none;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,151,58,.35); }
+    .btn-outline {
+      padding: .85rem 2rem; background: transparent; color: var(--cream);
+      border: 1.5px solid rgba(245,240,232,.3); border-radius: 5px;
+      font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 500;
+      cursor: pointer; transition: all .25s; text-decoration: none;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:none} }
+
+    /* stats strip */
+    .stats-strip {
+      position: relative; z-index: 1;
+      margin-top: 4rem;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1px;
+      border: 1px solid rgba(201,151,58,.2); border-radius: 10px; overflow: hidden;
+      max-width: 680px; width: 100%; margin-left: auto; margin-right: auto;
+      animation: fadeUp .8s .6s ease both;
+    }
+    .stat-item { padding: 1.4rem; background: rgba(255,255,255,.03); text-align: center; }
+    .stat-item + .stat-item { border-left: 1px solid rgba(201,151,58,.2); }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold-light); }
+    .stat-lbl { font-size: .78rem; color: var(--gray); margin-top: .25rem; letter-spacing: .05em; }
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem 6%; }
+    .section-tag { font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin-bottom: .6rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3.5vw,2.8rem); font-weight: 900; line-height: 1.15; }
+    .section-title em { font-style: normal; color: var(--gold-light); }
+    .section-sub { margin-top: .9rem; color: var(--gray); font-size: .95rem; line-height: 1.75; max-width: 540px; }
+    .divider { width: 48px; height: 3px; background: var(--gold); margin: 1.2rem 0; border-radius: 2px; }
+
+    /* ── VISI MISI ── */
+    #tentang { background: var(--navy-mid); }
+    .vm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 3.5rem; }
+    .vm-card {
+      background: var(--card-bg); border: 1px solid rgba(201,151,58,.15);
+      border-radius: 12px; padding: 2.2rem; position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .vm-card:hover { border-color: rgba(201,151,58,.45); transform: translateY(-4px); }
+    .vm-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+    .vm-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .vm-card h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; margin-bottom: .75rem; color: var(--gold-light); }
+    .vm-card p { color: var(--gray); line-height: 1.75; font-size: .92rem; }
+
+    /* ── PROGRAM KERJA ── */
+    #program { background: var(--navy); }
+    .program-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+    .prog-card {
+      background: var(--navy-light); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 10px; padding: 1.8rem; transition: all .3s; cursor: default;
+    }
+    .prog-card:hover { border-color: var(--gold); background: var(--navy-mid); transform: translateY(-3px); }
+    .prog-num { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: rgba(201,151,58,.22); line-height: 1; }
+    .prog-card h4 { font-size: 1rem; font-weight: 600; margin-top: .3rem; margin-bottom: .5rem; color: var(--cream); }
+    .prog-card p { font-size: .86rem; color: var(--gray); line-height: 1.7; }
+    .prog-tag {
+      display: inline-block; margin-top: 1rem; padding: .25rem .75rem;
+      background: rgba(201,151,58,.12); border-radius: 50px;
+      font-size: .72rem; color: var(--gold-light); letter-spacing: .06em;
+    }
+
+    /* ── STRUKTUR / PENGURUS ── */
+    #pengurus { background: var(--navy-mid); }
+    .pengurus-intro { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 3.5rem; }
+    .council-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.5rem; }
+    .council-card {
+      background: var(--card-bg); border: 1px solid rgba(201,151,58,.12);
+      border-radius: 10px; padding: 1.5rem; text-align: center;
+      transition: all .3s;
+    }
+    .council-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .avatar {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--navy-light));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900;
+      color: var(--navy); margin: 0 auto 1rem;
+      border: 2px solid rgba(201,151,58,.4);
+    }
+    .council-card .name { font-size: .95rem; font-weight: 600; color: var(--cream); }
+    .council-card .jabatan { font-size: .78rem; color: var(--gold); margin-top: .3rem; letter-spacing: .04em; }
+    .council-card .kelas { font-size: .78rem; color: var(--gray); margin-top: .2rem; }
+
+    /* highlight card (ketua) */
+    .council-card.highlight {
+      border-color: var(--gold);
+      background: linear-gradient(160deg, rgba(201,151,58,.12), var(--card-bg));
+      grid-column: span 2;
+    }
+    .council-card.highlight .avatar { width: 86px; height: 86px; font-size: 1.8rem; }
+
+    /* ── BERITA / KEGIATAN ── */
+    #kegiatan { background: var(--navy); }
+    .news-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-top: 3.5rem; }
+    .news-card {
+      border-radius: 10px; overflow: hidden; background: var(--navy-light);
+      border: 1px solid rgba(255,255,255,.07); transition: all .3s; cursor: pointer;
+    }
+    .news-card:hover { transform: translateY(-4px); border-color: rgba(201,151,58,.3); }
+    .news-img {
+      height: 160px; display: flex; align-items: center; justify-content: center;
+      font-size: 2.8rem;
+    }
+    .news-img.c1 { background: linear-gradient(135deg, #1a2a4a, #2a1a3a); }
+    .news-img.c2 { background: linear-gradient(135deg, #1a3a2a, #1a2a4a); }
+    .news-img.c3 { background: linear-gradient(135deg, #3a1a1a, #2a1a3a); }
+    .news-body { padding: 1.4rem; }
+    .news-cat { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: .4rem; }
+    .news-card h4 { font-size: .98rem; font-weight: 600; color: var(--cream); line-height: 1.45; }
+    .news-card .date { font-size: .78rem; color: var(--gray); margin-top: .6rem; }
+
+    /* ── GALERI ── */
+    #galeri { background: var(--navy-mid); }
+    .gallery-grid {
+      display: grid; margin-top: 3rem;
+      grid-template-columns: repeat(4, 1fr); grid-template-rows: auto;
+      gap: 1rem;
+    }
+    .gal-item {
+      border-radius: 8px; overflow: hidden;
+      height: 160px; display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; border: 1px solid rgba(201,151,58,.1);
+      transition: transform .3s; cursor: pointer;
+    }
+    .gal-item:hover { transform: scale(1.03); border-color: rgba(201,151,58,.4); }
+    .gal-item:nth-child(1) { grid-column: span 2; height: 220px; background: linear-gradient(135deg,#0d1f3c,#1d2d50); }
+    .gal-item:nth-child(2) { background: linear-gradient(135deg,#1a3a2a,#0d2a1a); }
+    .gal-item:nth-child(3) { background: linear-gradient(135deg,#3a1a0d,#2a1a0d); }
+    .gal-item:nth-child(4) { background: linear-gradient(135deg,#1a1a3a,#0d0d2a); }
+    .gal-item:nth-child(5) { background: linear-gradient(135deg,#2a2a1a,#1a1a0d); }
+    .gal-item:nth-child(6) { grid-column: span 2; height: 200px; background: linear-gradient(135deg,#0d2a2a,#1a3a3a); }
+
+    /* ── KONTAK ── */
+    #kontak { background: var(--navy); }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; margin-top: 3.5rem; }
+    .contact-info h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1.5rem; }
+    .contact-row { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.3rem; }
+    .contact-icon { font-size: 1.3rem; margin-top: .1rem; }
+    .contact-row strong { display: block; font-size: .82rem; color: var(--gold); letter-spacing: .05em; margin-bottom: .2rem; }
+    .contact-row span { font-size: .92rem; color: var(--gray); }
+    .contact-form { background: var(--navy-mid); border: 1px solid rgba(201,151,58,.15); border-radius: 12px; padding: 2rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    label { display: block; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin-bottom: .4rem; }
+    input, textarea, select {
+      width: 100%; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 6px; padding: .75rem 1rem; color: var(--cream);
+      font-family: 'DM Sans', sans-serif; font-size: .92rem;
+      transition: border-color .2s; outline: none;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--gold); }
+    textarea { resize: vertical; min-height: 110px; }
+    .form-submit {
+      width: 100%; padding: .9rem; background: var(--gold); color: var(--navy);
+      border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif;
+      font-size: .95rem; font-weight: 700; cursor: pointer; transition: all .25s;
+    }
+    .form-submit:hover { background: var(--gold-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #070d1a; border-top: 1px solid rgba(201,151,58,.15);
+      padding: 3rem 6% 2rem; display: grid;
+      grid-template-columns: 2fr 1fr 1fr; gap: 2.5rem;
+    }
+    .footer-brand .emblem-lg {
+      width: 52px; height: 52px;
+      background: var(--gold); clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 900; color: var(--navy);
+      margin-bottom: 1rem;
+    }
+    .footer-brand p { font-size: .88rem; color: var(--gray); line-height: 1.75; max-width: 280px; }
+    footer h5 { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 1rem; color: var(--cream); }
+    footer ul { list-style: none; }
+    footer ul li + li { margin-top: .5rem; }
+    footer ul li a { text-decoration: none; font-size: .88rem; color: var(--gray); transition: color .2s; }
+    footer ul li a:hover { color: var(--gold-light); }
+    .footer-bottom {
+      background: #070d1a; border-top: 1px solid rgba(255,255,255,.06);
+      text-align: center; padding: 1.2rem 6%; font-size: .8rem; color: var(--gray);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 5%; }
+      .nav-links, .nav-cta { display: none; }
+      .vm-grid, .contact-wrap { grid-template-columns: 1fr; }
+      .news-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gal-item:nth-child(1), .gal-item:nth-child(6) { grid-column: span 2; }
+      footer { grid-template-columns: 1fr; }
+      .council-card.highlight { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="emblem">M</div>
+    <span>MPK SMAN 10 BULUKUMBA</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#tentang">Tentang</a></li>
+    <li><a href="#program">Program</a></li>
+    <li><a href="#pengurus">Pengurus</a></li>
+    <li><a href="#kegiatan">Kegiatan</a></li>
+    <li><a href="#galeri">Galeri</a></li>
+    <li><a href="#kontak">Kontak</a></li>
+  </ul>
+  <button class="nav-cta">Bergabung</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-badge">Tahun Ajaran 2025 / 2026</span>
+    <h1>Majelis<br/><em>Perwakilan Kelas</em></h1>
+    <p>Wadah aspirasi, kreativitas, dan kepemimpinan siswa SMAN 10 BULUKUMBA. Bersama kita wujudkan sekolah yang lebih baik, bermakna, dan berdampak.</p>
+    <div class="hero-btns">
+      <a href="#program" class="btn-primary">Program Kerja</a>
+      <a href="#pengurus" class="btn-outline"></a>
+    </div>
+    <div class="stats-strip">
+      <div class="stat-item">
+        <div class="stat-num">28 </div>
+        <div class="stat-lbl">Perwakilan Kelas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">5 </div>
+        <div class="stat-lbl">Program Kerja</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">6</div>
+        <div class="stat-lbl">Bidang Kerja</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISI MISI -->
+<section id="tentang">
+  <p class="section-tag">Tentang Kami</p>
+  <h2 class="section-title">Visi & <em>Misi</em> MPK</h2>
+  <div class="divider"></div>
+  <p class="section-sub">MPK adalah lembaga legislatif siswa yang menjadi jembatan antara OSIS, warga sekolah, dan pihak sekolah dalam menciptakan lingkungan belajar yang kondusif.</p>
+  <div class="vm-grid">
+    <div class="vm-card">
+      <div class="vm-icon"></div>
+      <h3>Visi</h3>
+      <p>Terwujudnya MPK yang aktif, aspiratif, dan berdedikasi dalam memperjuangkan hak serta menyalurkan aspirasi seluruh warga kelas demi kemajuan sekolah.</p>
+    </div>
+    <div class="vm-card">
+      <div class="vm-icon"></div>
+      <h3>Misi</h3>
+      <p>Menampung dan menyalurkan aspirasi siswa secara demokratis, mengawasi kinerja OSIS, menjalin komunikasi antar kelas, dan menciptakan kegiatan yang meningkatkan potensi siswa.</p>
+    </div>
+    <div class="vm-card">
+      <div class="vm-icon">⚖</div>
+      <h3>Fungsi Legislatif</h3>
+      <p>Membuat dan menetapkan Anggaran Dasar & Rumah Tangga, serta peraturan lain yang diperlukan bagi kehidupan organisasi siswa di sekolah.</p>
+    </div>
+    <div class="vm-card">
+      <div class="vm-icon"></div>
+      <h3>Fungsi Pengawasan</h3>
+      <p>Mengawasi pelaksanaan program kerja OSIS dan memastikan setiap kegiatan berjalan sesuai dengan AD/ART dan aturan yang berlaku.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAM KERJA -->
+<section id="program">
+  <p class="section-tag">Program Kerja</p>
+  <h2 class="section-title">Agenda & <em>Kegiatan</em> Utama</h2>
+  <div class="divider"></div>
+  <div class="program-grid">
+    <div class="prog-card">
+      <div class="prog-num">01</div>
+      <h4>Forum Aspirasi Kelas</h4>
+      <p>Pertemuan rutin antar perwakilan kelas untuk menampung dan membahas aspirasi siswa setiap bulannya.</p>
+      <span class="prog-tag">Rutin Bulanan</span>
+    </div>
+    <div class="prog-card">
+      <div class="prog-num">02</div>
+      <h4>Pemilu OSIS</h4>
+      <p>Mengorganisir dan mengawasi jalannya pemilihan umum Ketua OSIS secara demokratis, jujur, dan transparan.</p>
+      <span class="prog-tag">Tahunan</span>
+    </div>
+    <div class="prog-card">
+      <div class="prog-num">03</div>
+      <h4>Sidang Paripurna</h4>
+      <p>Sidang evaluasi program kerja OSIS yang dilakukan setiap semester untuk memastikan akuntabilitas organisasi.</p>
+      <span class="prog-tag">Per Semester</span>
+    </div>
+    <div class="prog-card">
+      <div class="prog-num">04</div>
+      <h4>Pelatihan Kepemimpinan</h4>
+      <p>Workshop dan pelatihan soft skill kepemimpinan bagi seluruh anggota MPK dan perwakilan kelas.</p>
+      <span class="prog-tag">Triwulan</span>
+    </div>
+    <div class="prog-card">
+      <div class="prog-num">05</div>
+      <h4>Majalah Dinding & Media</h4>
+      <p>Pengelolaan majalah dinding dan media sosial resmi sebagai sarana informasi dan komunikasi sekolah.</p>
+      <span class="prog-tag">Mingguan</span>
+    </div>
+    <div class="prog-card">
+      <div class="prog-num">06</div>
+      <h4>Bakti Sosial Kelas</h4>
+      <p>Kegiatan sosial yang melibatkan seluruh kelas untuk memupuk rasa kebersamaan dan kepedulian sosial.</p>
+      <span class="prog-tag">Semester</span>
+    </div>
+  </div>
+</section>
+
+<!-- PENGURUS -->
+<section id="pengurus">
+  <div class="pengurus-intro">
+    <div>
+      <p class="section-tag">Struktur Organisasi</p>
+      <h2 class="section-title">Pengurus <em>MPK</em></h2>
+      <div class="divider"></div>
+    </div>
+    <p style="color:var(--gray);font-size:.88rem;max-width:320px;text-align:right;">Periode 2024/2025 · Ditetapkan melalui Sidang Paripurna</p>
+  </div>
+  <div class="council-grid">
+    <div class="council-card highlight">
+      <div class="avatar">AR</div>
+      <div class="name">Ahmad Tasywir solihin</div>
+      <div class="jabatan">Ketua MPK</div>
+      <div class="kelas">XI 1</div>
+    </div>
+    <div class="council-card">
+      <div class="avatar">NS</div>
+      <div class="name">Aqila Marsya Azalia</div>
+      <div class="jabatan">Wakil Ketua</div>
+      <div class="kelas">XI 6</div>
+    </div>
+    <div class="council-card">
+      <div class="avatar">DF</div>
+      <div class="name">uswatun hasanah</div>
+      <div class="jabatan">Sekretaris </div>
+      <div class="kelas">XI 8 </div>
+    </div>
+    <div class="council-card">
+      <div class="avatar">SA</div>
+      <div class="name">diva stefani</div>
+      <div class="jabatan">Bendahara</div>
+      <div class="kelas">XI 8</div>
+    </div>
+    <div class="council-card">
+      <div class="avatar">FP</div>
+      <div class="name">ahmad fathan bafadhal</div>
+      <div class="jabatan">Komisi I – Akademik</div>
+      <div class="kelas">XI 6</div>
+    </div>
+    <div class="council-card">
+      <div class="avatar">LK</div>
+      <div class="name">zhafirah zalwa</div>
+      <div class="jabatan">Komisi II – Sosial</div>
+      <div class="kelas">XI 8</div>
+    </div>
+    <div class="council-card">
+      <div class="avatar">BW</div>
+      <div class="name">Adnan</div>
+      <div class="jabatan">Komisi III – Pengawasan</div>
+      <div class="kelas">XI 3 </div>
+    </div>
+  </div>
+</section>
+
+<!-- BERITA / KEGIATAN -->
+<section id="kegiatan">
+  <p class="section-tag">Berita & Kegiatan</p>
+  <h2 class="section-title">Update <em>Terkini</em></h2>
+  <div class="divider"></div>
+  <div class="news-grid">
+    <div class="news-card">
+      <div class="news-img c1">️</div>
+      <div class="news-body">
+        <div class="news-cat">Pemilu OSIS</div>
+        <h4>Pemilihan Ketua OSIS 2025 Resmi Dibuka</h4>
+        <div class="date">15 september 2025</div>
+      </div>
+    </div>
+    <div class="news-card">
+      <div class="news-img c2"></div>
+      <div class="news-body">
+        <div class="news-cat">Bakti Sosial</div>
+        <h4>MPK Adakan Aksi Penghijauan di Lingkungan Sekolah</h4>
+        <div class="date">20 Desember 2025</div>
+      </div>
+    </div>
+    <div class="news-card">
+      <div class="news-img c3"></div>
+      <div class="news-body">
+        <div class="news-cat">Sidang</div>
+        <h4>Sidang Evaluasi Semester Ganjil Berhasil Dilaksanakan</h4>
+        <div class="date">10 Desember 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- KONTAK -->
+<section id="kontak">
+  <p class="section-tag">Hubungi Kami</p>
+  <h2 class="section-title">Sampaikan <em>Aspirasimu</em></h2>
+  <div class="divider"></div>
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h3>Kami siap mendengar.</h3>
+      <div class="contact-row">
+        <span class="contact-icon">🏫</span>
+        <div>
+          <strong>Alamat</strong>
+          <span>Jl. remaja bonto bangun,kec rilau ale. 1, Kab bulukumba , Sulawesi Selatan</span>
+        </div>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">📧</span>
+        <div>
+          <strong>Email</strong>
+          <span>mpk.sman10bulukumba@sekolah.sch.id</span>
+        </div>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">📱</span>
+        <div>
+          <strong>WhatsApp</strong>
+          <span>+62 882019198313</span>
+        </div>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">📍</span>
+        <div>
+          <strong>Instagram</strong>
+          <span>@mpk_sman10Bulukumba</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input type="text" placeholder="Masukkan nama kamu"/>
+      </div>
+      <div class="form-group">
+        <label>Kelas</label>
+        <select>
+          <option value="">Pilih kelas</option>
+          <option>X 1</option><option>X 2</option>
+          <option>XI 1</option><option>XI 2</option>
+          <option>XII 1</option><option>XII 1</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Pesan / Aspirasi</label>
+        <textarea placeholder="Tulis aspirasimu di sini..."></textarea>
+      </div>
+      <button class="form-submit">Kirim Aspirasi ✉️</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="emblem-lg">M</div>
+    <p>Majelis Perwakilan Kelas SMAN 10 BULUKUMBA — Menjadi suara nyata bagi setiap siswa, membangun sekolah yang lebih baik bersama.</p>
+  </div>
+  <div>
+    <h5>Navigasi</h5>
+    <ul>
+      <li><a href="#tentang">Tentang</a></li>
+      <li><a href="#program">Program Kerja</a></li>
+      <li><a href="#pengurus">Pengurus</a></li>
+      <li><a href="#kegiatan">Kegiatan</a></li>
+    </ul>
+  </div>
+  <div>
+    <h5>Media Sosial</h5>
+    <ul>
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">WhatsApp</a></li>
+      <li><a href="#">YouTube</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">© 2026 MPK SMAN 10 BULULUMBA · Semua hak dilindungi</div>
+
+</body>
+</html>
